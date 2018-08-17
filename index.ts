@@ -6,17 +6,13 @@ import { HttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 
-interface IApolloSplitClient {
-  client: object;
-}
-
 interface IDefinintion {
   kind: string;
   operation?: string;
 }
 
-class ApolloSplitClient implements IApolloSplitClient {
-  client: object;
+class ApolloSplitClient {
+  client: any;
   constructor(httpUri: string, wsUri: string) {
     const httpLink = new HttpLink({
       uri: httpUri
