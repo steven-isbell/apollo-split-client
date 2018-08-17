@@ -1,0 +1,33 @@
+{
+  "name": "apollo-split-client",
+  "version": "1.0.0",
+  "description": "A module that creates a socket and http enabled ApolloProvider client",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/steven-isbell/apollo-split-client.git"
+  },
+  "bugs": {
+    "url": "https://github.com/philipszdavido/mypluralize/issues"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "apollo-cache-inmemory": "^1.2.7",
+    "apollo-client": "^2.3.8",
+    "apollo-link": "^1.2.2",
+    "apollo-link-error": "^1.1.0",
+    "apollo-link-http": "^1.5.4",
+    "apollo-link-ws": "^1.0.8",
+    "apollo-utilities": "^1.0.18",
+    "graphql": "^0.13.2",
+    "subscriptions-transport-ws": "^0.9.14"
+  },
+  "devDependencies": {
+    "@types/ws": "^6.0.0",
+    "typescript": "^3.0.1"
+  }
+}
