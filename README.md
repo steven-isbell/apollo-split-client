@@ -2,11 +2,13 @@
 
 # apollo-split-client
 
-A zero config TypeScript client implementation to make http and subscriptions work with ApolloProvider.
+A zero config TypeScript client implementation to make http and subscriptions work with React Apollo's ApolloProvider.
 
 # Usage
 
-`apollo-split-client` is a class with a `client` property that exposes a configured ApolloProvider client. `apollo-split-client` accepts two arguments, an `httpUri` which is the path for your graphql instance, and a `wsUri` which is the path for your WebSocket instance.
+`apollo-split-client` is a class with a `client` property that exposes a configured ApolloProvider client. `apollo-split-client` accepts two arguments, an `httpUri` which is the path for your graphql instance, and an optional `wsUri` which is the path for your WebSocket instance.
+
+You can use `apollo-split-client` to easily use Subscriptions within React Apollo. Alternatively, you can omit the WebSocket location and use `apollo-split-client` as an http only module.
 
 ### React
 
@@ -15,7 +17,11 @@ A zero config TypeScript client implementation to make http and subscriptions wo
 import React, { Component } from 'react';
 import ApolloSplitClient from 'apollo-split-client';
 
+// Enabled with Subscription Support through a WebSocket
 const { client } = new ApolloSplitClient('http://localhost:3000/graphql', 'ws://http://localhost:3000');
+
+// Enabled as http-only
+const { client } = new ApolloSplitClient('http://localhost:3000/graphql');
 
 class App extends Component {
     // ...
