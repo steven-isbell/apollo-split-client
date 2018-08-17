@@ -5,7 +5,7 @@ A simple TypeScript client implementation to make http and subscriptions work wi
 
 # Usage
 
-`apollo-split-client` is a class with a `client` property that exposes an Apollo client. `apollo-split-client` accepts two arguments, an `httpUri` which is the path for your graphql instance, and a `wsUri` which is the path for your WebSocket instance.
+`apollo-split-client` is a class with a `client` property that exposes an ApolloProvider client. `apollo-split-client` accepts two arguments, an `httpUri` which is the path for your graphql instance, and a `wsUri` which is the path for your WebSocket instance.
 
 ### React
 ```javascript
