@@ -13,26 +13,37 @@ interface IDefinintion {
 
 class ApolloSplitClient {
   client: any;
-  constructor(httpUri: string, wsUri: string) {
+  constructor(httpUri: string, wsUri?: string) {
+    function buildSplit(httpLink: HttpLink, wsLink?: WebSocketLink) {
+      if (wsLink) {
+        return split(
+          ({ query }) => {
+            const { kind, operation }: IDefinintion = getMainDefinition(query);
+            return (
+              kind === 'OperationDefinition' && operation === 'subscription'
+            );
+          },
+          wsLink,
+          httpLink
+        );
+      }
+      return httpLink;
+    }
+
     const httpLink = new HttpLink({
       uri: httpUri
     });
 
-    const wsLink = new WebSocketLink({
-      options: {
-        reconnect: true
-      },
-      uri: wsUri
-    });
+    const wsLink = wsUri
+      ? new WebSocketLink({
+          options: {
+            reconnect: true
+          },
+          uri: wsUri
+        })
+      : undefined;
 
-    const link = split(
-      ({ query }) => {
-        const { kind, operation }: IDefinintion = getMainDefinition(query);
-        return kind === 'OperationDefinition' && operation === 'subscription';
-      },
-      wsLink,
-      httpLink
-    );
+    const link = buildSplit(httpLink, wsLink);
 
     this.client = new ApolloClient({
       cache: new InMemoryCache(),
