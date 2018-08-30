@@ -14,7 +14,10 @@ interface IDefinintion {
 class ApolloSplitClient {
   client: any;
   constructor(httpUri: string, wsUri?: string) {
-    function buildSplit(httpLink: HttpLink, wsLink?: WebSocketLink) {
+    function buildSplit(
+      httpLink: HttpLink,
+      wsLink?: WebSocketLink
+    ): ApolloLink {
       if (wsLink) {
         return split(
           ({ query }) => {
