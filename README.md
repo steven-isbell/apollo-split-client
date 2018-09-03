@@ -18,7 +18,7 @@ import React, { Component } from 'react';
 import ApolloSplitClient from 'apollo-split-client';
 
 // Enabled with Subscription Support through a WebSocket
-const { client } = new ApolloSplitClient('http://localhost:3000/graphql', 'ws://http://localhost:3000');
+const { client } = new ApolloSplitClient('http://localhost:3000/graphql', 'ws://localhost:3000');
 
 // Enabled as http-only
 const { client } = new ApolloSplitClient('http://localhost:3000/graphql');
