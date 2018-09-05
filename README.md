@@ -37,4 +37,6 @@ class App extends Component {
 export default App;
 ```
 
+# Contributing
 
+Interested in contributing? View the contribution guidelines <a href="/CONTRIBUTING.md">here.</a>
