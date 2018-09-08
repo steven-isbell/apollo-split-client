@@ -16,6 +16,7 @@ You can use `apollo-split-client` to easily use Subscriptions within React Apoll
 // In App.js
 import React, { Component } from 'react';
 import ApolloSplitClient from 'apollo-split-client';
+import { ApolloProvider } from 'react-apollo';
 
 // Enabled with Subscription Support through a WebSocket
 const { client } = new ApolloSplitClient('http://localhost:3000/graphql', 'ws://localhost:3000');
