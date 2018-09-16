@@ -1,5 +1,3 @@
-# This is a Work In Progress (WIP)
-
 # apollo-split-client
 
 A simple TypeScript client implementation that enables Subscriptions alongside your Queries and Mutations when using Apollo's ApolloProvider.
