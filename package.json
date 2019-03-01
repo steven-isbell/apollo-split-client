@@ -1,6 +1,6 @@
 {
   "name": "apollo-split-client",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "A module that adds support for Subscriptions alongside Mutations and Queries for the ApolloProvider client. Open Sourced under MIT.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
