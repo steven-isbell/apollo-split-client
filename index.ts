@@ -13,7 +13,7 @@ interface IDefinintion {
 
 class ApolloSplitClient {
   client: any;
-  constructor(httpUri: string, wsUri?: string) {
+  constructor(httpOpts: string | HttpLink.Options, wsOpts?: string | WebSocketLink.Configuration) {
     function buildSplit(
       httpLink: HttpLink,
       wsLink?: WebSocketLink
@@ -33,17 +33,17 @@ class ApolloSplitClient {
       return httpLink;
     }
 
-    const httpLink = new HttpLink({
-      uri: httpUri
-    });
+    const httpLink = new HttpLink(typeof httpOpts === "string" ? {
+      uri: httpOpts
+    } : httpOpts);
 
-    const wsLink = wsUri
-      ? new WebSocketLink({
+    const wsLink = wsOpts
+      ? new WebSocketLink(typeof wsOpts === "string" ? {
           options: {
             reconnect: true
           },
-          uri: wsUri
-        })
+          uri: wsOpts
+        }: wsOpts)
       : undefined;
 
     const link = buildSplit(httpLink, wsLink);
