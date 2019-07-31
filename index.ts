@@ -6,67 +6,77 @@ import { HttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 
-interface IDefinintion {
+interface MainDefinintion< {
   kind: string;
   operation?: string;
 }
 
-class ApolloSplitClient {
-  client: any;
-  constructor(httpOpts: string | HttpLink.Options, wsOpts?: string | WebSocketLink.Configuration) {
-    function buildSplit(
-      httpLink: HttpLink,
-      wsLink?: WebSocketLink
-    ): ApolloLink {
-      if (wsLink) {
-        return split(
-          ({ query }) => {
-            const { kind, operation }: IDefinintion = getMainDefinition(query);
-            return (
-              kind === 'OperationDefinition' && operation === 'subscription'
-            );
-          },
-          wsLink,
-          httpLink
+function buildSplit(
+  httpLink: HttpLink,
+  wsLink?: WebSocketLink
+): ApolloLink {
+  if (wsLink) {
+    return split(
+      ({ query }) => {
+        const { kind, operation } = getMainDefinition(query);
+        return (
+          kind === 'OperationDefinition' && operation === 'subscription'
         );
-      }
-      return httpLink;
-    }
-
-    const httpLink = new HttpLink(typeof httpOpts === "string" ? {
-      uri: httpOpts
-    } : httpOpts);
-
-    const wsLink = wsOpts
-      ? new WebSocketLink(typeof wsOpts === "string" ? {
-          options: {
-            reconnect: true
-          },
-          uri: wsOpts
-        }: wsOpts)
-      : undefined;
-
-    const link = buildSplit(httpLink, wsLink);
-
-    this.client = new ApolloClient({
-      cache: new InMemoryCache(),
-      link: ApolloLink.from([
-        onError(({ graphQLErrors, networkError }) => {
-          if (graphQLErrors) {
-            graphQLErrors.map(({ message, locations, path }) =>
-              console.log(
-                `[GraphQL Error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-              )
-            );
-          }
-          if (networkError) {
-            console.log(`[Network Error]: ${networkError}`);
-          }
-        }),
-        link
-      ])
-    });
+      },
+      wsLink,
+      httpLink
+    );
   }
+  return httpLink;
 }
 
-export default ApolloSplitClient;
+const httpLink = new HttpLink(typeof httpOpts === "string" ? {
+  uri: httpOpts
+} : httpOpts);
+
+function createWsLink(wsOpts) {
+  return wsOpts
+  ? new WebSocketLink(typeof wsOpts === "string" ? {
+      options: {
+        reconnect: true
+      },
+      uri: wsOpts
+    }: wsOpts)
+  : undefined;
+}
+
+const wsLink = wsOpts
+  ? new WebSocketLink(typeof wsOpts === "string" ? {
+      options: {
+        reconnect: true
+      },
+      uri: wsOpts
+    }: wsOpts)
+  : undefined;
+
+const link = buildSplit(httpLink, wsLink);
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: ApolloLink.from([
+    onError(({ graphQLErrors, networkError }) => {
+      if (graphQLErrors) {
+        graphQLErrors.map(({ message, locations, path }) =>
+          console.log(
+            `[GraphQL Error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+          )
+        );
+      }
+      if (networkError) {
+        console.log(`[Network Error]: ${networkError}`);
+      }
+    }),
+    link
+  ])
+})
+
+function buildClient(httpOpts: string | HttpLink.Options, wsOpts?: string | WebSocketLink.Configuration) {
+  const wsLink = createWsLink();
+}
+
+export default client;
