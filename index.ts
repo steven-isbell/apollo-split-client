@@ -6,7 +6,9 @@ import { HttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 
-interface MainDefinintion< {
+// add apollo client and graphql as peerdependencies
+
+interface MainDefinintion {
   kind: string;
   operation?: string;
 }
@@ -30,11 +32,13 @@ function buildSplit(
   return httpLink;
 }
 
-const httpLink = new HttpLink(typeof httpOpts === "string" ? {
-  uri: httpOpts
-} : httpOpts);
+function createHttpLink(httpOpts: string | HttpLink.Options) {
+  return new HttpLink(typeof httpOpts === "string" ? {
+    uri: httpOpts
+  } : httpOpts);
+}
 
-function createWsLink(wsOpts) {
+function createWsLink(wsOpts?: string | WebSocketLink.Configuration) {
   return wsOpts
   ? new WebSocketLink(typeof wsOpts === "string" ? {
       options: {
@@ -76,7 +80,8 @@ const client = new ApolloClient({
 })
 
 function buildClient(httpOpts: string | HttpLink.Options, wsOpts?: string | WebSocketLink.Configuration) {
-  const wsLink = createWsLink();
+  const wsLink = createWsLink(wsOpts);
+  const httpLink = createHttpLink(httpOpts);
 }
 
 export default client;
